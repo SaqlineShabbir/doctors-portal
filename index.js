@@ -46,6 +46,7 @@ async function run (){
        const database = client.db('doctors_portal');
        const appointmentCollection = database.collection('appointments')
        const userCollection = database.collection('users')
+       const reviewCollection = database.collection('reviews')
   
   app.get('/appointments', async (req, res) => {
       const email = req.query.email;
@@ -119,7 +120,20 @@ async function run (){
    })
 
 
+   //post review
+   app.post('/reviews', async (req, res) =>{
+    const user = req.body;
+    const result = await reviewCollection.insertOne(user);
+    res.json(result);
 
+})
+
+//get all reviews
+app.get('/reviews', async (req, res) =>{
+    const cursor = reviewCollection.find({});
+    const review = await cursor.toArray()
+     res.send(review)
+ })
 
     }
 
